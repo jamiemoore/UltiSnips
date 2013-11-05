@@ -1,0 +1,30 @@
+snippet head "Heading" !b
+# ${1:Project Name}
+endsnippet
+
+snippet sub "Sub-Heading" !b
+## ${1:heading}
+endsnippet
+
+snippet code "Code Block" !b
+\`\`\`${1:language}
+${2:#code goes here} 
+\`\`\`
+endsnippet
+
+snippet ol "Ordered List" !b
+1. ${1:First}
+1. ${2:Second}
+endsnippet
+
+snippet ul "Unordered List" !b
+* ${1:item}
+* ${2:thing}
+endsnippet
+
+snippet table "Table" !b
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | \$1600 |
+| col 2 is      | centered      |   \$12 |
+endsnippet
