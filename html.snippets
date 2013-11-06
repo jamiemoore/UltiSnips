@@ -1,5 +1,13 @@
-snippet t "HTML Tag" b
+snippet t "HTML Tag" !b
 <${1:div}>
-	<!-- todo -->
+	${2:<!-- todo -->}
 </${1/(\w+).*/$1/}>
+endsnippet
+
+snippet in "Inline HTML tag" !b
+<${1:span}> ${2:<!-- todo -->} </${1/(\w+).*/$1/}>
+endsnippet
+
+snippet style "Stylesheet link element" !b
+<link rel="stylesheet" type="text/css" href="${1:styles.css}">
 endsnippet
