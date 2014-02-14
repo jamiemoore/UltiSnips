@@ -5,5 +5,39 @@ class ${1:classname} {
   ${3:#Content}
 
 }
+endsnippet
+
+snippet pclass "param-class" !b
+class ${1:classname} (
+  $enabled = $1::params::enabled,
+  $template = $1::params::template
+) inherits $1::params {
+
+  ${2:#Content here}
+
+}
 endsnippet 
+
+snippet noti "notify" !b
+notify{"${1:message} ${${2:myvar}}": }
+endsnippet
+
+
+snippet templ "template" !b
+file { '${1:targetfile}':
+	name    => '$1',
+	mode    => '0644',
+	owner   => 'root',
+	group   => 'root',
+	content => template('classname/sourcefile.erb'),
+	require => Package[ packagename ],
+}
+endsnippet
+
+
+snippet test "test class" !b
+class { '${1:classname}':
+  parm1 => 'value1',
+}
+endsnippet
 
