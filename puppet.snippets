@@ -7,10 +7,10 @@ class ${1:classname} {
 }
 endsnippet
 
-snippet pclass "param-class" !b
+snippet pclass "parameterised class" !b
 class ${1:classname} (
-  $enabled = $1::params::enabled,
-  $template = $1::params::template
+  $enabled = $$1::params::enabled,
+  $template = $$1::params::template
 ) inherits $1::params {
 
   ${2:#Content here}
@@ -18,26 +18,68 @@ class ${1:classname} (
 }
 endsnippet 
 
+snippet params "params class" !b
+#Params class
+class ${1:classname}::params {
+  $enabled = false
+}
+endsnippet
+
+
 snippet noti "notify" !b
 notify{"${1:message} ${${2:myvar}}": }
 endsnippet
 
 
-snippet templ "template" !b
+snippet temp "template" !b
 file { '${1:targetfile}':
-	name    => '$1',
-	mode    => '0644',
-	owner   => 'root',
-	group   => 'root',
-	content => template('classname/sourcefile.erb'),
-	require => Package[ packagename ],
+  name    => '$1',
+  mode    => '0644',
+  owner   => 'root',
+  group   => 'root',
+  content => template('classname/sourcefile.erb'),
+  require => Package['packagename'],
+  notify  => Service['packagename']
 }
 endsnippet
 
 
-snippet test "test class" !b
+snippet rclass "test class" !b
 class { '${1:classname}':
   parm1 => 'value1',
 }
+endsnippet
+
+snippet pack "package" !b
+package { '${1:packagename}':
+  ensure => installed,
+}
+endsnippet
+
+snippet exec "exec" !b
+exec { '${1:command}':
+  command => '$1',
+  onlyif  => '${2:check-command}',
+}
+endsnippet
+
+snippet service "service" !b
+service { '${1:servicename}':
+  ensure => running,
+  enable => true,
+}
+endsnippet
+
+snippet yumplus "yumplus package" !b
+package { '${1:packagename}':
+  ensure   => installed,
+  provider => 'yum_plus',
+  vendor   => '--enablerepo ${2:repotoenable}',
+}
+endsnippet
+
+
+snippet $ensure "$ensure" !b
+$ensure = $enabled ? {true => running, false => stopped}
 endsnippet
 
