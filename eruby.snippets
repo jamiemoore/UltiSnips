@@ -1,0 +1,18 @@
+snippet if "ifelse" !b
+<% if @${1::varname} %>
+  ${2:bar = 42}
+<% else %> 
+  ${3:bar = 42}
+<% end %>
+endsnippet
+
+snippet var "variable" !w
+<%= @${1::varname} %> 
+endsnippet
+
+snippet loop "erb loop" !b
+<% @${1::array}.each do |${2::element}| %>
+echo <%= $2 %>
+<% end %> 
+endsnippet
+
