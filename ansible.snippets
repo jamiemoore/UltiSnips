@@ -1,3 +1,45 @@
 snippet service "ansible service" !b
-- service: name=${1:#servicename} state=${2:#started|stopped} enabled=${3:#yes|no}
+- name: ${1:#service} service ${2:#started|stopped}
+  service: name=$1 state=$2 enabled=${3:#yes|no}
 endsnippet
+
+snippet dir "ansible directory" !b
+- name: Create ${1:#directory} 
+  file: path=$1 state=directory owner=root group=root mode=0755
+endsnippet
+
+snippet repo "ansible repo" !b
+- name: ${1:#description} Repo
+  apt_repository: repo='${2:#repoline}' state=present update_cache=yes
+endsnippet
+
+snippet packages "ansible packages" !b
+- name: install ${1:#description} packages
+  apt: name={{ item }} state=present
+  with_items:
+  - ${2:#package}
+endsnippet
+
+snippet template "ansible template" !b
+- name: ${1:#description} 
+  template: src=${2:#source} dest=${3:/etc/destination} owner=root group=root mode=0644
+  notify: 
+  - ${4:#restart service}
+endsnippet
+
+snippet file  "ansible file" !b
+- name: ${1:#description} 
+  copy: src=${2:#source} dest=${3:/etc/destination} owner=root group=root mode=0644
+  notify: 
+  - ${4:#restart service}
+endsnippet
+
+snippet handler  "ansible handler" !b
+- name: restart ${1:#service}
+  service: name=$1 state=restarted
+endsnippet
+
+
+
+
+
