@@ -1,7 +1,34 @@
+global !p
+def get_parent_directory(filename, dir_level=1):
+	import os
+	path = os.path.normpath(os.path.abspath(filename))
+	split_path = path.split(os.sep)
+	return split_path[-(dir_level + 1)]
+endglobal
+
+
+snippet tags "ansible tags" !b
+tags: ${1:`!p snip.rv = get_parent_directory(path, 2)`}
+endsnippet
+
 snippet service "ansible service" !b
 - name: ${1:#service} service ${2:#started|stopped}
   service: name=$1 state=$2 enabled=${3:#yes|no}
+  tags: ${4:`!p snip.rv = get_parent_directory(path, 2)`}
+
 endsnippet
+
+snippet topplay "ansible topplay" !b
+---
+# file: `!p snip.rv = fn`
+- hosts: ${1:webservers}
+  vars_files:
+    - group_vars/$1
+  roles:
+    - ${2:common}
+    - ${3:webtier}
+endsnippet
+
 
 snippet dir "ansible directory" !b
 - name: Create ${1:#directory} 
@@ -34,12 +61,36 @@ snippet file  "ansible file" !b
   - ${4:#restart service}
 endsnippet
 
-snippet handler  "ansible handler" !b
-- name: restart ${1:#service}
-  service: name=$1 state=restarted
+
+snippet symlink  "ansible symlink" !b
+- name: ${1:#description} 
+  file: src=${2:#source} dest=${3:/etc/destination} state=link
+  tags: ${4:`!p snip.rv = get_parent_directory(path, 2)`}
+
 endsnippet
 
 
 
 
+snippet handler  "ansible handler" !b
+- name: restart ${1:#service}
+  service: name=$1 state=restarted
+endsnippet
 
+snippet cron  "ansible cron" !b
+- name: cronname 
+  cron: name="cronname" user="username"
+    job="cd {{ app_portal.approot }}; flock -n temp/Report-Scheduler.lck ./app/console Report:Scheduler --env={{ app_portal.symfonyenv }}"
+endsnippet
+
+snippet whenfile  "ansible whenfile" !b
+- name: check somefile exists 
+  stat: path=/etc/somefile.conf
+  register: stat_result
+  tags: ${4:`!p snip.rv = get_parent_directory(path, 2)`}
+
+- name: copy template only if somefile does not exist
+  template: src=somefile.j2 dest=/etc/somefile.conf
+  when: not stat_result.stat.exists
+  tags: ${4:`!p snip.rv = get_parent_directory(path, 2)`}
+endsnippet
