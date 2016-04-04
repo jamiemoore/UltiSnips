@@ -1,0 +1,10 @@
+#snippet service "ansible service" !b                                                      
+#- name: ${1:#service} service ${2:#started|stopped}                                       
+#  service: name=$1 state=$2 enabled=${3:#yes|no}                                          
+#  tags: ${4:`!p snip.rv = get_parent_directory(path, 2)`}                                 
+#                                                                                          
+#endsnippet  
+
+snippet strict "use strict" !b
+'use strict';
+endsnippet

@@ -1,0 +1,10 @@
+snippet head "BASH Header" !b
+#!/bin/bash
+###############################################################################
+# `!p snip.rv = fn` - ${1:description} 
+###############################################################################
+set -euo pipefail
+IFS=$'\n\t'
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+endsnippet
